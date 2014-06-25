@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Balanced
 {
-    /*public class ResourceCollection<T> : ResourcePagination<T>
+    public class ResourceCollection<T> : ResourcePagination<T>
     {
         public ResourceCollection(string href) : base(href)
         {
 
         }
-    }*/
+    }
 }

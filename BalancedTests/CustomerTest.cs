@@ -70,5 +70,16 @@ namespace BalancedTests
 
             Assert.AreEqual("Mike Richard Jones", customer.name);
         }
+
+        [TestMethod]
+        public void TestCustomerCollection()
+        {
+            Customer.Collection customers = new Customer.Collection();
+
+            foreach (Customer c in customers)
+            {
+                var foo = c.name;
+            }
+        }
     }
 }

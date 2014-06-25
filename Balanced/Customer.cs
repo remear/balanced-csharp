@@ -43,9 +43,9 @@ namespace Balanced
             return this.save<Customer>();
         }
 
-        /*public static class Collection : ResourceCollection<Customer>
+        public class Collection : ResourceCollection<Customer>
         {
             public Collection() : base(resource_href) { }
-        }*/
+        }
     }
 }

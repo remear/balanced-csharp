@@ -17,8 +17,7 @@ namespace Balanced
 {
     public static class Client
     {
-
-        private static dynamic Op<T>(string path, string method, string payload)
+        private static dynamic Op(string path, string method, string payload)
         {
             Uri url = new Uri(Balanced.getAPIURL() + path);
             var request = (HttpWebRequest)WebRequest.Create(url);
@@ -72,10 +71,15 @@ namespace Balanced
                 }
             }
 
-            return Deserialize<T>(responsePayload);
+            return responsePayload;
         }
 
         public static dynamic Get<T>(string path, Dictionary<string, string> queryParams)
+        {
+            return Get<T>(path, queryParams, true);
+        }
+
+        public static dynamic Get<T>(string path, Dictionary<string, string> queryParams, bool deserialize)
         {
             var queryString = (string)null;
 
@@ -85,7 +89,10 @@ namespace Balanced
                 path = path + queryString;
             }
 
-            return Op<T>(path, "GET", null);
+            if (deserialize)
+                return Deserialize<T>(Op(path, "GET", null));
+
+            return Op(path, "GET", null);
         }
 
         private static string ToQueryString(Dictionary<string, string> queryParams)
@@ -114,12 +121,12 @@ namespace Balanced
  
         public static dynamic post<T>(string path, string payload)
         {
-            return Op<T>(path, "POST", payload);
+            return Deserialize<T>(Op(path, "POST", payload));
         }
 
         public static dynamic put<T>(string path, string payload)
         {
-            return Op<T>(path, "PUT", payload);
+            return Deserialize<T>(Op(path, "PUT", payload));
         }
 
         public static dynamic Deserialize<T>(string payload)
