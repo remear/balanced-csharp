@@ -10,32 +10,14 @@ namespace Balanced
 {
     public static class Balanced
     {
-        private static string VERSION = "1.0";
-        private static string API_REVISION = "1.1";
-        private static string API_URL = "https://api.balancedpayments.com";
-        private static string AGENT = "balanced-csharp";
+        public static string VERSION { get { return "1.0";  } }
+        public static string API_REVISION { get { return "1.1"; } }
+        public static string API_URL { get { return "https://api.balancedpayments.com"; } }
         internal static string API_KEY { get; set; }
 
         public static void configure(string apiKey)
         {
             API_KEY = apiKey;
         }
-
-        public static string getAPIURL()
-        {
-            return API_URL;
-        }
-
-        public static string getVersion()
-        {
-            return VERSION;
-        }
-
-        public static void crap()
-        {
-            var customer = new Customer();
-            Console.Write(customer.email);
-        }
-
     }
 }

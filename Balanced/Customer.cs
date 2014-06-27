@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Balanced
 {
     public class Customer : Resource
     {
+        [JsonIgnore]
         public static string resource_href
         {
             get { return "/customers"; }
@@ -23,6 +25,15 @@ namespace Balanced
         public string phone { get; set; }
         public string source { get; set; }
         public string ssn_last4 { get; set; }
+
+        [JsonIgnore]
+        [ResourceField(field="customers.credits")]
+        public Credit.Collection credits { get; set; }
+
+        [JsonIgnore]
+        [ResourceField(field = "customers.debits")]
+        public Debit.Collection debits { get; set; }
+
 
         public Customer() { }
 
@@ -46,6 +57,7 @@ namespace Balanced
         public class Collection : ResourceCollection<Customer>
         {
             public Collection() : base(resource_href) { }
+            public Collection(string href) : base(href) { }
         }
     }
 }

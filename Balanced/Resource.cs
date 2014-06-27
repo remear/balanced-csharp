@@ -13,16 +13,16 @@ namespace Balanced
 {
     public abstract class Resource
     {
-        public string href;
+        public string href { get; set; }
         [JsonIgnore]
-        public Dictionary<string, string> hyperlinks;
-        public string id;
-        public Dictionary<string, string> links;
-        public Dictionary<string, string> meta;
+        public Dictionary<string, string> hyperlinks { get; set; }
+        public string id { get; set; }
+        public Dictionary<string, string> links { get; set; }
+        public Dictionary<string, string> meta { get; set; }
         [JsonIgnore]
-        public DateTime created_at;
+        public DateTime created_at { get; set; }
         [JsonIgnore]
-        public DateTime updated_at;
+        public DateTime updated_at { get; set; }
 
         public Resource() { }
 
@@ -51,24 +51,8 @@ namespace Balanced
 
         public static string serialize(object resource)
         {
-            string payload = JsonConvert.SerializeObject(resource, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            //string payload = JsonConvert.SerializeObject(resource);
-            /*IList<PropertyInfo> props = new List<PropertyInfo>(this.GetType().GetProperties());
-
-            Dictionary<string, object> payload;
-            if (props.Count > 0)
-            {
-
-            }
-
-            foreach (PropertyInfo prop in props)
-            {
-                object propValue = prop.GetValue(this, null);
-
-                // Do something with propValue
-            }
-            */
-            return payload;
+            return JsonConvert.SerializeObject(resource,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
         }
     }
 }

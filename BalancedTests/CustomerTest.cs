@@ -74,12 +74,16 @@ namespace BalancedTests
         [TestMethod]
         public void TestCustomerCollection()
         {
+            int count = 0;
             Customer.Collection customers = new Customer.Collection();
 
             foreach (Customer c in customers)
             {
                 var foo = c.name;
+                count += 1;
             }
+
+            Assert.AreEqual(customers.Total(), count);
         }
     }
 }

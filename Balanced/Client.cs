@@ -12,6 +12,7 @@ using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Balanced.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace Balanced
 {
@@ -19,12 +20,12 @@ namespace Balanced
     {
         private static dynamic Op(string path, string method, string payload)
         {
-            Uri url = new Uri(Balanced.getAPIURL() + path);
+            Uri url = new Uri(Balanced.API_URL + path);
             var request = (HttpWebRequest)WebRequest.Create(url);
-            request.UserAgent = "balanced-csharp/" + Balanced.getVersion();
+            request.UserAgent = "balanced-csharp/" + Balanced.VERSION;
             request.Method = method;
-            request.ContentType = "application/json;revision=1.1";
-            request.Accept = "application/vnd.api+json;revision=1.1";
+            request.ContentType = "application/json;revision=" + Balanced.API_REVISION;
+            request.Accept = "application/vnd.api+json;revision=" + Balanced.API_REVISION;
             request.Timeout = 60000;
             request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
             string autorization = Balanced.API_KEY + ":";
@@ -133,7 +134,10 @@ namespace Balanced
         {
             var responseObject = JObject.Parse(payload.ToString());
             IList<string> keys = responseObject.Properties().Select(p => p.Name).ToList();
-
+            Dictionary<string, string> hyperlinks = responseObject["links"].ToObject<Dictionary<string, string>>();
+            Dictionary<string, object> meta = null;
+            if (responseObject["meta"] != null)
+                meta = responseObject["meta"].ToObject<Dictionary<string, object>>();
             dynamic resource = null;
 
             foreach (string key in keys)
@@ -145,7 +149,75 @@ namespace Balanced
                 }
 
                 resource = responseObject[key][0].ToObject<T>();
+                resource = Hydrate(key, hyperlinks, resource);
             }
+            
+            return resource;
+        }
+
+        public static dynamic Hydrate(string key, Dictionary<string, string> hyperlinks, dynamic resource)
+        {
+            // Build full links
+            Dictionary<string, string> newLinks = new Dictionary<string, string>();
+
+            foreach (KeyValuePair<string, string> entry in hyperlinks)
+            {
+                string rawLink = entry.Value;
+                Regex r = new Regex(@"{(.+?)}");
+                Match m = r.Match(rawLink);
+                string token = m.Value.ToString();
+                string theKey = token.Substring(1, token.Length - 2).Substring(token.IndexOf("."));
+
+                string tokenValue = default(string);
+                string assembledLink = default(string);
+
+                try
+                {
+                    tokenValue = resource.links[theKey];
+                }
+                catch (KeyNotFoundException e)
+                {
+                    //typeof(Customer).GetProperty()
+                    PropertyInfo property = resource.GetType().GetProperty(theKey);
+                    tokenValue = property.GetValue(resource);
+                }
+
+                if (tokenValue != null)
+                {
+                    assembledLink = rawLink.Replace(token, tokenValue);
+                }
+
+                newLinks[entry.Key] = assembledLink;
+            }
+
+            resource.links = newLinks;
+
+            // Hydrate links
+            Type resType = resource.GetType();
+            List<PropertyInfo> fields = resType.GetProperties()
+                .Where(x => x.GetCustomAttributes(typeof(ResourceField), false).Any())
+                .ToList();
+
+            foreach (PropertyInfo f in fields)
+            {
+                string fName = f.PropertyType.Name;
+                string link = f.GetCustomAttribute<ResourceField>().field;
+                //string resName = resType.Name;
+
+                dynamic res = Activator.CreateInstance(f.PropertyType, link); ;
+
+                /*if (fName.Contains("Collection"))
+                {
+                    res = Activator.CreateInstance(f.PropertyType, link);
+                }
+                else
+                {
+                    res = Get<dynamic>(resource.links[link], null).ToObject<resType>();
+                }*/
+                
+                f.SetValue(resource, res);
+            }
+
             return resource;
         }
 

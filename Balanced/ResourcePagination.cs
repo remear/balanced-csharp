@@ -11,6 +11,7 @@ namespace Balanced
     public class ResourcePagination<T> : IEnumerable
     {
         private string href;
+        private ResourceIterator<T> iterator;
 
         public ResourcePagination(string pHref)
         {
@@ -20,21 +21,28 @@ namespace Balanced
         public IEnumerator GetEnumerator()
         {
             ResourcePage<T> page = new ResourcePage<T>(href);
-            return new ResourceIterator<T>(href, page);
+            iterator = new ResourceIterator<T>(href, page);
+            return iterator;
         }
 
+        public int Total()
+        {
+            return iterator.Total();
+        }
 
         public class ResourceIterator<T> : IEnumerator
         {
-            public String href;
-            public ResourcePage<T> page;
-            public int index;
+            private String href;
+            private ResourcePage<T> page;
+            private int index;
+            private int total;
 
-            public ResourceIterator(String href, ResourcePage<T> page)
+            public ResourceIterator(String pHref, ResourcePage<T> pPage)
             {
-                this.href = href;
-                this.page = page;
-                this.index = 0;
+                href = pHref;
+                page = pPage;
+                index = 0;
+                total = page.getTotal();
             }
 
             public object Current
@@ -56,13 +64,16 @@ namespace Balanced
             public bool MoveNext()
             {
                 return (index < page.getSize() || this.page.getNextUri() != null);
-
-
             }
 
             public void Reset()
             {
                 throw new NotImplementedException();
+            }
+
+            public int Total()
+            {
+                return total;
             }
         }
     }
