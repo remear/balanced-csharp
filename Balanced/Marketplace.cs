@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace Balanced
 {
-    class Marketplace : Resource
+    public class Marketplace : Resource
     {
+        public static string resource_href
+        {
+            get { return "/marketplaces"; }
+        }
+
         // fields
         public string domain_url { get; set; }
         public string name { get; set; }
@@ -70,5 +75,31 @@ namespace Balanced
         public int unsettled_fees { get; set; }
 
 
+        public static Marketplace Mine()
+        {
+            Marketplace mp = Marketplace.query().first();
+            if (mp == null)
+                throw new SystemException("A Marketplace is required but was not found");
+            return mp;
+        }
+
+        public Marketplace() { }
+
+        public Marketplace(Dictionary<string, object> payload) { }
+
+        public static Marketplace Fetch(string href)
+        {
+            return Resource.Fetch<Marketplace>(href);
+        }
+
+        public Marketplace save()
+        {
+            return this.save<Marketplace>();
+        }
+
+        public static ResourceQuery<Marketplace> query()
+        {
+            return new ResourceQuery<Marketplace>(resource_href);
+        }
     }
 }

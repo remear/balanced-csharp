@@ -46,12 +46,7 @@ namespace Balanced
 
         public static BankAccount Fetch(string href)
         {
-            return Resource.Fetch<BankAccount>(href, null);
-        }
-
-        public static BankAccount Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<BankAccount>(href, queryParams);
+            return Resource.Fetch<BankAccount>(href);
         }
 
         public BankAccount save()
@@ -59,10 +54,15 @@ namespace Balanced
             return this.save<BankAccount>();
         }
 
-        public class Collection : ResourceCollection<Card>
+        public class Collection : ResourceCollection<BankAccount>
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<BankAccount> query()
+        {
+            return new ResourceQuery<BankAccount>(resource_href);
         }
     }
 }

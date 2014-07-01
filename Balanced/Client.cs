@@ -177,7 +177,6 @@ namespace Balanced
                 }
                 catch (KeyNotFoundException e)
                 {
-                    //typeof(Customer).GetProperty()
                     PropertyInfo property = resource.GetType().GetProperty(theKey);
                     tokenValue = property.GetValue(resource);
                 }
@@ -202,9 +201,8 @@ namespace Balanced
             {
                 string fName = f.PropertyType.Name;
                 string link = f.GetCustomAttribute<ResourceField>().field;
-                //string resName = resType.Name;
 
-                dynamic res = Activator.CreateInstance(f.PropertyType, link); ;
+                dynamic res = Activator.CreateInstance(f.PropertyType, link);
 
                 /*if (fName.Contains("Collection"))
                 {

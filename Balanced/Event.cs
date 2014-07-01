@@ -29,18 +29,18 @@ namespace Balanced
 
         public static Event Fetch(string href)
         {
-            return Resource.Fetch<Event>(href, null);
-        }
-
-        public static Event Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Event>(href, queryParams);
+            return Resource.Fetch<Event>(href);
         }
 
         public class Collection : ResourceCollection<Event>
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Event> query()
+        {
+            return new ResourceQuery<Event>(resource_href);
         }
     }
 }

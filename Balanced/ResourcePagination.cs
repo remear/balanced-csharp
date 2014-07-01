@@ -7,21 +7,28 @@ using System.Threading.Tasks;
 
 namespace Balanced
 {
-
     public class ResourcePagination<T> : IEnumerable
     {
         private string href;
-        private ResourceIterator<T> iterator;
+        private ResourceIterator iterator;
+        private UriBuilder uri_builder;
+
+        protected UriBuilder getURIBuilder()
+        {
+            return uri_builder;
+        }
 
         public ResourcePagination(string pHref)
         {
             href = pHref;
+            uri_builder = new UriBuilder();
+            uri_builder.Path = href;
         }
 
         public IEnumerator GetEnumerator()
         {
             ResourcePage<T> page = new ResourcePage<T>(href);
-            iterator = new ResourceIterator<T>(href, page);
+            iterator = new ResourceIterator(href, page);
             return iterator;
         }
 
@@ -30,7 +37,26 @@ namespace Balanced
             return iterator.Total();
         }
 
-        public class ResourceIterator<T> : IEnumerator
+        protected string getURI()
+        {
+            return uri_builder.Path.ToString() + uri_builder.Query.ToString();
+        }
+
+        public List<T> all()
+        {
+            string href = getURI();
+            ResourcePage<T> page = new ResourcePage<T>(href);
+            List<T> items = new List<T>(page.getTotal());
+            ResourceIterator iterator = new ResourceIterator(href, page);
+            while (iterator.MoveNext())
+            {
+                object obj = iterator.Current;
+                items.Add((T)obj);
+            }
+            return items;
+        }
+
+        public class ResourceIterator : IEnumerator
         {
             private String href;
             private ResourcePage<T> page;
@@ -58,7 +84,6 @@ namespace Balanced
                     index += 1;
                     return t;
                 }
-
             }
 
             public bool MoveNext()
@@ -66,14 +91,14 @@ namespace Balanced
                 return (index < page.getSize() || this.page.getNextUri() != null);
             }
 
-            public void Reset()
-            {
-                throw new NotImplementedException();
-            }
-
             public int Total()
             {
                 return total;
+            }
+
+            public void Reset()
+            {
+                throw new NotImplementedException();
             }
         }
     }

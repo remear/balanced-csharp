@@ -49,12 +49,7 @@ namespace Balanced
 
         public static Refund Fetch(string href)
         {
-            return Resource.Fetch<Refund>(href, null);
-        }
-
-        public static Refund Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Refund>(href, queryParams);
+            return Resource.Fetch<Refund>(href);
         }
 
         public Refund save()
@@ -66,6 +61,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Refund> query()
+        {
+            return new ResourceQuery<Refund>(resource_href);
         }
     }
 }

@@ -32,20 +32,25 @@ namespace Balanced
         [JsonIgnore]
         public string transaction_number { get; set; }
 
+        [JsonIgnore]
         [ResourceField(field = "debits.customer")]
         public Customer customer { get; set; }
 
-        //[ResourceField(field = "debits.dispute")]
-        //public Dispute dispute { get; set; }
+        [JsonIgnore]
+        [ResourceField(field = "debits.dispute")]
+        public Dispute dispute { get; set; }
 
-        //[ResourceField(field = "debits.events")]
-        //public Event.Collection events { get; set; }
+        [JsonIgnore]
+        [ResourceField(field = "debits.events")]
+        public Event.Collection events { get; set; }
 
-        //[ResourceField(field = "debits.refunds")]
-        //public Refund.Collection refunds { get; set; }
+        [JsonIgnore]
+        [ResourceField(field = "debits.refunds")]
+        public Refund.Collection refunds { get; set; }
 
-        //[ResourceField(field = "debits.source")]
-        //public FundingInstrument source { get; set; }
+        [JsonIgnore]
+        [ResourceField(field = "debits.source")]
+        public FundingInstrument source { get; set; }
 
 
         public Debit() { }
@@ -54,12 +59,7 @@ namespace Balanced
 
         public static Debit Fetch(string href)
         {
-            return Resource.Fetch<Debit>(href, null);
-        }
-
-        public static Debit Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Debit>(href, queryParams);
+            return Resource.Fetch<Debit>(href);
         }
 
         public Debit save()
@@ -71,6 +71,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Debit> query()
+        {
+            return new ResourceQuery<Debit>(resource_href);
         }
     }
 }

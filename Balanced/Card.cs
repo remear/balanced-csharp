@@ -66,12 +66,7 @@ namespace Balanced
 
         public static Card Fetch(string href)
         {
-            return Resource.Fetch<Card>(href, null);
-        }
-
-        public static Card Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Card>(href, queryParams);
+            return Resource.Fetch<Card>(href);
         }
 
         public Card save()
@@ -83,6 +78,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Card> query()
+        {
+            return new ResourceQuery<Card>(resource_href);
         }
     }
 }

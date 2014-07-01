@@ -40,18 +40,18 @@ namespace Balanced
 
         public static Dispute Fetch(string href)
         {
-            return Resource.Fetch<Dispute>(href, null);
-        }
-
-        public static Dispute Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Dispute>(href, queryParams);
+            return Resource.Fetch<Dispute>(href);
         }
 
         public class Collection : ResourceCollection<Dispute>
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Dispute> query()
+        {
+            return new ResourceQuery<Dispute>(resource_href);
         }
     }
 }

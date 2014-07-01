@@ -44,11 +44,6 @@ namespace Balanced
             return Client.Get<T>(href, null);
         }
 
-        public static T Fetch<T>(string href, Dictionary<string, string> queryParams)
-        {
-            return Client.Get<T>(href, queryParams);
-        }
-
         public static string serialize(object resource)
         {
             return JsonConvert.SerializeObject(resource,

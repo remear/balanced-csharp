@@ -59,6 +59,8 @@
     <Compile Include="Exceptions\APIException.cs" />
     <Compile Include="Exceptions\FundingInstrumentNotCreditable.cs" />
     <Compile Include="Exceptions\HTTPException.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\UriBuilderExtensions.cs" />
     <Compile Include="FundingInstrument.cs" />
     <Compile Include="Marketplace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -41,12 +41,7 @@ namespace Balanced
 
         public static Customer Fetch(string href)
         {
-            return Resource.Fetch<Customer>(href, null);
-        }
-
-        public static Customer Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Customer>(href, queryParams);
+            return Resource.Fetch<Customer>(href);
         }
 
         public Customer save()
@@ -58,6 +53,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Customer> query()
+        {
+            return new ResourceQuery<Customer>(resource_href);
         }
     }
 }

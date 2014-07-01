@@ -49,12 +49,7 @@ namespace Balanced
 
         public static Reversal Fetch(string href)
         {
-            return Resource.Fetch<Reversal>(href, null);
-        }
-
-        public static Reversal Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Reversal>(href, queryParams);
+            return Resource.Fetch<Reversal>(href);
         }
 
         public Reversal save()
@@ -66,6 +61,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Reversal> query()
+        {
+            return new ResourceQuery<Reversal>(resource_href);
         }
     }
 }

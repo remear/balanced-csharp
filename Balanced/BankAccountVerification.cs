@@ -34,12 +34,7 @@ namespace Balanced
 
         public static BankAccountVerification Fetch(string href)
         {
-            return Resource.Fetch<BankAccountVerification>(href, null);
-        }
-
-        public static BankAccountVerification Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<BankAccountVerification>(href, queryParams);
+            return Resource.Fetch<BankAccountVerification>(href);
         }
 
         public BankAccountVerification save()
@@ -51,6 +46,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<BankAccountVerification> query()
+        {
+            return new ResourceQuery<BankAccountVerification>(resource_href);
         }
     }
 }

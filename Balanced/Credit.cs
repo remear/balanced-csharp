@@ -35,12 +35,7 @@ namespace Balanced
 
         public static Credit Fetch(string href)
         {
-            return Resource.Fetch<Credit>(href, null);
-        }
-
-        public static Credit Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Credit>(href, queryParams);
+            return Resource.Fetch<Credit>(href);
         }
 
         public Credit save()
@@ -52,6 +47,11 @@ namespace Balanced
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Credit> query()
+        {
+            return new ResourceQuery<Credit>(resource_href);
         }
     }
 }

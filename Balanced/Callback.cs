@@ -30,18 +30,18 @@ namespace Balanced
 
         public static Callback Fetch(string href)
         {
-            return Resource.Fetch<Callback>(href, null);
-        }
-
-        public static Callback Fetch(string href, Dictionary<string, string> queryParams)
-        {
-            return Resource.Fetch<Callback>(href, queryParams);
+            return Resource.Fetch<Callback>(href);
         }
 
         public class Collection : ResourceCollection<Callback>
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
+        }
+
+        public static ResourceQuery<Callback> query()
+        {
+            return new ResourceQuery<Callback>(resource_href);
         }
     }
 }
