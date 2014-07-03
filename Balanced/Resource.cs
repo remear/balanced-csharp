@@ -13,17 +13,17 @@ namespace Balanced
 {
     public abstract class Resource
     {
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string href { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string id { get; set; }
         [ResourceField]
         public Dictionary<string, string> links { get; set; }
         [ResourceField]
         public Dictionary<string, string> meta { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public DateTime created_at { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public DateTime updated_at { get; set; }
 
         public Resource() { }
@@ -34,12 +34,12 @@ namespace Balanced
 
             if (this.href != null)
             {
-                res = Client.put<T>(this.href, serialize(this));
+                res = Client.Put<T>(this.href, serialize(this));
             }
             else
             {
                 string href = this.GetType().GetProperty("resource_href").GetValue(this).ToString();
-                res = Client.post<T>(href, serialize(this));
+                res = Client.Post<T>(href, serialize(this));
             }
 
             Type resType = this.GetType();
@@ -57,9 +57,14 @@ namespace Balanced
             }
         }
 
+        public void unstore()
+        {
+            Client.Delete(this.href);
+        }
+
         public static T Fetch<T>(string href)
         {
-            return Client.Get<T>(href, null);
+            return Client.Get<T>(href);
         }
 
         public static string serialize(object resource)
