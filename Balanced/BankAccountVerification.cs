@@ -16,15 +16,17 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public int attempts { get; set; }
+        [ResourceField]
         public int attempts_remaining { get; set; }
+        [ResourceField]
         public string deposit_status { get; set; }
+        [ResourceField]
         public string verification_status { get; set; }
 
         // attributes
-
-        [JsonIgnore]
-        [ResourceField(field = "bank_account_verifications.bank_account")]
+        [ResourceField(field = "bank_account_verifications.bank_account", link = true, serialize = false)]
         public BankAccount bank_account { get; set; }
 
 
@@ -37,9 +39,9 @@ namespace Balanced
             return Resource.Fetch<BankAccountVerification>(href);
         }
 
-        public BankAccountVerification save()
+        public void save()
         {
-            return this.save<BankAccountVerification>();
+            this.save<BankAccountVerification>();
         }
 
         public class Collection : ResourceCollection<BankAccountVerification>

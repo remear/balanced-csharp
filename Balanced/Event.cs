@@ -16,16 +16,16 @@ namespace Balanced
         }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public DateTime occurred_at { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string type { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public Dictionary<string, int> callback_statuses { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public Dictionary<string, object> entity { get; set; }
-        [JsonIgnore]
-        public Callback.Collection callbacks;
+        [ResourceField(serialize = false)]
+        public Callback.Collection callbacks { get; set; }
 
         public static Event Fetch(string href)
         {

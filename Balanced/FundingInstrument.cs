@@ -10,13 +10,13 @@ namespace Balanced
     public abstract class FundingInstrument : Resource
     {
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public bool can_credit { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public bool can_debit { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string bank_name { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string fingerprint { get; set; }
     }
 }

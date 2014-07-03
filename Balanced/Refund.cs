@@ -16,32 +16,30 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public int amount { get; set; }
+        [ResourceField]
         public string description { get; set; }
         
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string currency { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string status { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string transaction_number { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "refunds.debit")]
+        [ResourceField(field = "refunds.debit", link = true, serialize = false)]
         public Debit debit { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "refunds.dispute")]
+        [ResourceField(field = "refunds.dispute", link = true, serialize = false)]
         public Dispute dispute { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "refunds.events")]
+        [ResourceField(field = "refunds.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }
 
-        //[JsonIgnore]
-        //[ResourceField(field = "refunds.order")]
-        //public Order order { get; set; }
+        [ResourceField(field = "refunds.order", link = true, serialize = false)]
+        public Order order { get; set; }
 
         public Refund() { }
 
@@ -52,9 +50,9 @@ namespace Balanced
             return Resource.Fetch<Refund>(href);
         }
 
-        public Refund save()
+        public void save()
         {
-            return this.save<Refund>();
+            this.save<Refund>();
         }
 
         public class Collection : ResourceCollection<Refund>

@@ -16,47 +16,49 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public Dictionary<string, string> address { get; set; }
+        [ResourceField]
         public string cvv { get; set; }
+        [ResourceField]
         public int expiration_month { get; set; }
+        [ResourceField]
         public int expiration_year { get; set; }
+        [ResourceField]
         public string name { get; set; }
+        [ResourceField]
         public string number { get; set; }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string avs_postal_match { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string avs_result { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string avs_result_match { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string brand { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string category { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string cvv_match { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string cvv_result { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public bool is_verified { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string type { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field="cards.card_holds")]
+        [ResourceField(field = "cards.card_holds", link = true, serialize = false)]
         public CardHold.Collection card_holds { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "cards.customer")]
+        [ResourceField(field = "cards.customer", link = true, serialize = false)]
         public Customer customer { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "cards.debits")]
+        [ResourceField(field = "cards.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "cards.credits")]
+        [ResourceField(field = "cards.credits", link = true, serialize = false)]
         public Credit.Collection credits { get; set; }
 
 
@@ -69,9 +71,9 @@ namespace Balanced
             return Resource.Fetch<Card>(href);
         }
 
-        public Card save()
+        public void save()
         {
-            return this.save<Card>();
+            this.save<Card>();
         }
 
         public class Collection : ResourceCollection<Card>

@@ -16,39 +16,37 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public int amount { get; set; }
+        [ResourceField]
         public string description { get; set; }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string currency { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public DateTime expires_at { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string failure_reason { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string failure_reason_code { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string status { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string transaction_number { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string voided_at { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field="card_holds.card")]
+        [ResourceField(field = "card_holds.card", link = true, serialize = false)]
         public Card card { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "card_holds.debit")]
+        [ResourceField(field = "card_holds.debit", link = true, serialize = false)]
         public Debit debit { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "card_holds.debits")]
+        [ResourceField(field = "card_holds.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field="card_holds.events")]
+        [ResourceField(field = "card_holds.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }
 
 
@@ -61,9 +59,9 @@ namespace Balanced
             return Resource.Fetch<CardHold>(href);
         }
 
-        public CardHold save()
+        public void save()
         {
-            return this.save<CardHold>();
+            this.save<CardHold>();
         }
 
         public class Collection : ResourceCollection<CardHold>

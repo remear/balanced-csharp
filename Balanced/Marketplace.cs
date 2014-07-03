@@ -9,69 +9,63 @@ namespace Balanced
 {
     public class Marketplace : Resource
     {
+        [JsonIgnore]
         public static string resource_href
         {
             get { return "/marketplaces"; }
         }
 
         // fields
+        [ResourceField]
         public string domain_url { get; set; }
+        [ResourceField]
         public string name { get; set; }
+        [ResourceField]
         public string support_email_address { get; set; }
+        [ResourceField]
         public string support_phone_number { get; set; }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public int in_escrow { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.bank_accounts")]
+        [ResourceField(field = "marketplaces.bank_accounts", serialize = false)]
         public BankAccount.Collection bank_accounts { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.callbacks")]
+        [ResourceField(field = "marketplaces.callbacks", serialize = false)]
         public Callback.Collection callbacks { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.cards")]
+        [ResourceField(field = "marketplaces.cards", serialize = false)]
         public Card.Collection cards { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.customers")]
+        [ResourceField(field = "marketplaces.customers", serialize = false)]
         public Customer.Collection customers { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.credits")]
+        [ResourceField(field = "marketplaces.credits", serialize = false)]
         public Credit.Collection credits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.card_holds")]
+        [ResourceField(field = "marketplaces.card_holds", serialize = false)]
         public CardHold.Collection card_holds { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.debits")]
+        [ResourceField(field = "marketplaces.debits", serialize = false)]
         public Debit.Collection debits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.events")]
+        [ResourceField(field = "marketplaces.events", serialize = false)]
         public Event.Collection events { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.refunds")]
+        [ResourceField(field = "marketplaces.refunds", serialize = false)]
         public Refund.Collection refunds { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.reversals")]
+        [ResourceField(field = "marketplaces.reversals", serialize = false)]
         public Reversal.Collection reversals { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "marketplaces.owner_customer")]
+        [ResourceField(field = "marketplaces.owner_customer", serialize = false)]
         public Customer owner_customer { get; set; }
 
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public bool production { get; set; }
 
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public int unsettled_fees { get; set; }
 
 
@@ -92,9 +86,9 @@ namespace Balanced
             return Resource.Fetch<Marketplace>(href);
         }
 
-        public Marketplace save()
+        public void save()
         {
-            return this.save<Marketplace>();
+            this.save<Marketplace>();
         }
 
         public static ResourceQuery<Marketplace> query()

@@ -15,19 +15,41 @@ namespace Balanced
             get { return "/credits"; }
         }
 
+        // fields
+        [ResourceField]
         public int amount { get; set; }
+        [ResourceField]
         public string appears_on_statement_as { get; set; }
-
-        [JsonIgnore]
-        public string currency { get; set; }
+        [ResourceField]
         public string description { get; set; }
+
+        [ResourceField(field = "credits.order", link = true)]
+        public Order order { get; set; }
+
+        // attributes
+        [ResourceField(serialize = false)]
+        public string currency { get; set; }
+        [ResourceField(serialize = false)]
         public string failure_reason { get; set; }
+        [ResourceField(serialize = false)]
         public string failure_reason_code { get; set; }
+        [ResourceField(serialize = false)]
         public string status { get; set; }
+        [ResourceField(serialize = false)]
         public string transaction_number { get; set; }
 
-        //[ResourceField(field="credits.customer")]
-        //public Customer customer { get; set; }
+        [ResourceField(field = "credits.customer", link = true, serialize = false)]
+        public Customer customer { get; set; }
+
+        [ResourceField(field = "credits.destination", link = true)]
+        public FundingInstrument destination { get; set; }
+
+        [ResourceField(field = "credits.events", link = true, serialize = false)]
+        public Event.Collection events { get; set; }
+
+        [ResourceField(field = "credits.reversals", link = true, serialize = false)]
+        public Reversal.Collection reversals { get; set; }
+
 
         public Credit() { }
 
@@ -38,9 +60,9 @@ namespace Balanced
             return Resource.Fetch<Credit>(href);
         }
 
-        public Credit save()
+        public void save()
         {
-            return this.save<Credit>();
+            this.save<Credit>();
         }
 
         public class Collection : ResourceCollection<Credit>

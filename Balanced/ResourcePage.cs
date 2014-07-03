@@ -9,8 +9,6 @@ namespace Balanced
 {
     public class ResourcePage<T>
     {
-        //private Client client = Balanced.getInstance().getClient();
-    
         public string href;
         private List<T> items;
         private int total;
@@ -28,14 +26,13 @@ namespace Balanced
                 string pNext_uri,
                 string pLast_uri)
         {
-            /*href = href;
-            items = items;
-            total = total;        
-            first_uri = first_uri;
-            previous_uri = previous_uri;
-            next_uri = next_uri;
-            last_uri = last_uri;*/
-        
+            href = pHref;
+            items = pItems;
+            total = pTotal;        
+            first_uri = pFirst_uri;
+            previous_uri = pPrevious_uri;
+            next_uri = pNext_uri;
+            last_uri = pLast_uri;
         }
     
         public ResourcePage(string pHref)

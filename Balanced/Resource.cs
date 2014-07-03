@@ -13,11 +13,13 @@ namespace Balanced
 {
     public abstract class Resource
     {
+        [JsonIgnore]
         public string href { get; set; }
         [JsonIgnore]
-        public Dictionary<string, string> hyperlinks { get; set; }
         public string id { get; set; }
+        [ResourceField]
         public Dictionary<string, string> links { get; set; }
+        [ResourceField]
         public Dictionary<string, string> meta { get; set; }
         [JsonIgnore]
         public DateTime created_at { get; set; }
@@ -26,16 +28,32 @@ namespace Balanced
 
         public Resource() { }
 
-        public T save<T>()
+        public void save<T>()
         {
+            dynamic res = null;
+
             if (this.href != null)
             {
-                return Client.put<T>(this.href, serialize(this));
+                res = Client.put<T>(this.href, serialize(this));
             }
             else
             {
                 string href = this.GetType().GetProperty("resource_href").GetValue(this).ToString();
-                return Client.post<T>(href, serialize(this));
+                res = Client.post<T>(href, serialize(this));
+            }
+
+            Type resType = this.GetType();
+            List<PropertyInfo> fields = resType.GetProperties().ToList();
+
+            foreach (PropertyInfo f in fields)
+            {
+                string propName = f.Name;
+                if (f.Name.Equals("resource_href"))
+                    continue;
+                PropertyInfo propToCopy = res.GetType().GetProperty(propName);
+                object propValue = propToCopy.GetValue(res);
+
+                f.SetValue(this, propValue);
             }
         }
 
@@ -47,7 +65,10 @@ namespace Balanced
         public static string serialize(object resource)
         {
             return JsonConvert.SerializeObject(resource,
-                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                new JsonSerializerSettings {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    ContractResolver = new AllPropertiesResolver()
+                });
         }
     }
 }

@@ -16,11 +16,13 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public string method { get; set; }
+        [ResourceField]
         public string url { get; set; }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField(link = true, serialize = false)]
         public string revision { get; set; }
 
 

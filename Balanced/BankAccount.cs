@@ -16,27 +16,28 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public string account_type { get; set; }
+        [ResourceField]
         public string account_number { get; set; }
+        [ResourceField]
         public Dictionary<string, string> address { get; set; }
+        [ResourceField]
         public string name { get; set; }
+        [ResourceField]
         public string routing_number { get; set; }
 
         // attributes
-        [JsonIgnore]
-        [ResourceField(field = "bank_accounts.bank_account_verifications")]
+        [ResourceField(field = "bank_accounts.bank_account_verifications", link = true, serialize = false)]
         public BankAccountVerification.Collection verifications { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "bank_accounts.bank_account_verification")]
+        [ResourceField(field = "bank_accounts.bank_account_verification", link = true, serialize = false)]
         public BankAccountVerification verification { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "bank_accounts.credits")]
+        [ResourceField(field = "bank_accounts.credits", link = true, serialize = false)]
         public Credit.Collection credits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "bank_accounts.debits")]
+        [ResourceField(field = "bank_accounts.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
 
 
@@ -49,9 +50,9 @@ namespace Balanced
             return Resource.Fetch<BankAccount>(href);
         }
 
-        public BankAccount save()
+        public void save()
         {
-            return this.save<BankAccount>();
+            this.save<BankAccount>();
         }
 
         public class Collection : ResourceCollection<BankAccount>

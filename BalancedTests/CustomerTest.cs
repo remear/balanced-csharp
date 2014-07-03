@@ -50,11 +50,11 @@ namespace BalancedTests
             customer.name = "Henry Ford";
             customer.phone = "123-456-7890";
 
-            Customer savedCustomer = customer.save();
-            Assert.AreEqual("Henry Ford", savedCustomer.name);
+            customer.save();
+            Assert.AreEqual("Henry Ford", customer.name);
 
             Customer customerA = new Customer() { name = "Mike Jones" };
-            customerA = customerA.save();
+            customerA.save();
         }
 
         [TestMethod]
@@ -63,10 +63,10 @@ namespace BalancedTests
             Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
 
             Customer customer = new Customer() { name = "Mike Jones" };
-            customer = customer.save();
+            customer.save();
 
             customer.name = "Mike Richard Jones";
-            Customer updatedCustomer = customer.save();
+            customer.save();
 
             Assert.AreEqual("Mike Richard Jones", customer.name);
         }

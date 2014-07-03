@@ -13,9 +13,24 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Balanced.Exceptions;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Serialization;
 
 namespace Balanced
 {
+    class AllPropertiesResolver : DefaultContractResolver
+    {
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+        {
+            var properties = objectType.GetProperties()
+                .Where(x => x.GetCustomAttributes(typeof(ResourceField), false)
+                    .Where(y => ((ResourceField)y).serialize == true).Any())
+                .Cast<MemberInfo>()
+                .ToList();
+
+            return properties;
+        }
+    }
+
     public static class Client
     {
         private static dynamic Op(string path, string method, string payload)
@@ -175,7 +190,7 @@ namespace Balanced
                 {
                     tokenValue = resource.links[theKey];
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException)
                 {
                     PropertyInfo property = resource.GetType().GetProperty(theKey);
                     tokenValue = property.GetValue(resource);
@@ -194,25 +209,43 @@ namespace Balanced
             // Hydrate links
             Type resType = resource.GetType();
             List<PropertyInfo> fields = resType.GetProperties()
-                .Where(x => x.GetCustomAttributes(typeof(ResourceField), false).Any())
+                .Where(x => x.GetCustomAttributes(typeof(ResourceField), false)
+                    .Where(rf => ((ResourceField)rf).link == true).Any())
                 .ToList();
 
             foreach (PropertyInfo f in fields)
             {
                 string fName = f.PropertyType.Name;
-                string link = f.GetCustomAttribute<ResourceField>().field;
+                string linkKey = f.GetCustomAttribute<ResourceField>().field;
+                string linkHref = null;
 
-                dynamic res = Activator.CreateInstance(f.PropertyType, link);
-
-                /*if (fName.Contains("Collection"))
+                try
                 {
-                    res = Activator.CreateInstance(f.PropertyType, link);
+                    linkHref = resource.links[linkKey];
                 }
-                else
+                catch (KeyNotFoundException)
                 {
-                    res = Get<dynamic>(resource.links[link], null).ToObject<resType>();
-                }*/
+                    linkHref = null;
+                }
                 
+
+                dynamic res = null;
+
+                if (linkHref != null)
+                {
+                    if (fName.Contains("Collection"))
+                    {
+                        res = Activator.CreateInstance(f.PropertyType, linkHref);
+                    }
+                    else
+                    {
+                        //res = Get<dynamic>(resource.links[link], null).ToObject<resType>();
+                        MethodInfo methodInfo = f.PropertyType.GetMethod("Fetch");
+                        object classInstance = Activator.CreateInstance(f.PropertyType);
+                        res = methodInfo.Invoke(classInstance, new object[] { linkHref });
+                    }
+                }
+
                 f.SetValue(resource, res);
             }
 

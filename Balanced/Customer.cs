@@ -15,24 +15,53 @@ namespace Balanced
             get { return "/customers"; }
         }
 
+        // field
+        [ResourceField]
         public Dictionary<string, string> address { get; set; }
+        [ResourceField]
         public string business_name { get; set; }
+        [ResourceField]
         public int? dob_month { get; set; }
+        [ResourceField]
         public int? dob_year { get; set; }
+        [ResourceField]
         public string ein { get; set; }
+        [ResourceField]
         public string email { get; set; }
+        [ResourceField]
         public string name { get; set; }
+        [ResourceField]
         public string phone { get; set; }
-        public string source { get; set; }
+        [ResourceField]
         public string ssn_last4 { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field="customers.credits")]
+        // attributes
+        [ResourceField(serialize = false)]
+        public string merchant_status { get; set; }
+
+        [ResourceField(field = "customers.bank_accounts", link = true, serialize = false)]
+        public BankAccount.Collection bank_accounts { get; set; }
+
+        [ResourceField(field = "customers.card_holds", link = true, serialize = false)]
+        public CardHold.Collection card_holds { get; set; }
+
+        [ResourceField(field = "customers.cards", link = true, serialize = false)]
+        public Card.Collection cards { get; set; }
+
+        [ResourceField(field = "customers.credits", link = true, serialize = false)]
         public Credit.Collection credits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "customers.debits")]
+        [ResourceField(field = "customers.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
+
+        [ResourceField(field = "customers.orders", link = true, serialize = false)]
+        public Order.Collection orders { get; set; }
+
+        [ResourceField(field = "customers.refunds", link = true, serialize = false)]
+        public Refund.Collection refunds { get; set; }
+
+        [ResourceField(field = "customers.reversals", link = true, serialize = false)]
+        public Reversal.Collection reversals { get; set; }
 
 
         public Customer() { }
@@ -44,9 +73,9 @@ namespace Balanced
             return Resource.Fetch<Customer>(href);
         }
 
-        public Customer save()
+        public void save()
         {
-            return this.save<Customer>();
+            this.save<Customer>();
         }
 
         public class Collection : ResourceCollection<Customer>

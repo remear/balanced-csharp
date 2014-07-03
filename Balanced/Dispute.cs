@@ -16,25 +16,23 @@ namespace Balanced
         }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField]
         public int amount { get; set; }
-        [JsonIgnore]
+        [ResourceField]
         public string currency { get; set; }
-        [JsonIgnore]
+        [ResourceField]
         public DateTime initiated_at { get; set; }
-        [JsonIgnore]
+        [ResourceField]
         public string reason { get; set; }
-        [JsonIgnore]
+        [ResourceField]
         public DateTime respond_by { get; set; }
-        [JsonIgnore]
+        [ResourceField]
         public string status { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field="disputes.events")]
+        [ResourceField(field = "disputes.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "disputes.transaction")]
+        [ResourceField(field = "disputes.transaction", link = true, serialize = false)]
         public Debit transaction { get; set; }
 
 

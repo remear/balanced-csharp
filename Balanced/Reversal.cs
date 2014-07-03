@@ -16,32 +16,31 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public int amount { get; set; }
+        [ResourceField]
         public string description { get; set; }
 
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string currency { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string failure_reason { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string failure_reason_code { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string status { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string transaction_number { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "reversals.credit")]
+        [ResourceField(field = "reversals.credit", link = true, serialize = false)]
         public Credit credit { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "reversals.events")]
+        [ResourceField(field = "reversals.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }
 
-        //[JsonIgnore]
-        //[ResourceField(field = "reversals.order")]
-        //public Order order { get; set; }
+        [ResourceField(field = "reversals.order", link = true, serialize = false)]
+        public Order order { get; set; }
 
         public Reversal() { }
 
@@ -52,9 +51,9 @@ namespace Balanced
             return Resource.Fetch<Reversal>(href);
         }
 
-        public Reversal save()
+        public void save()
         {
-            return this.save<Reversal>();
+            this.save<Reversal>();
         }
 
         public class Collection : ResourceCollection<Reversal>

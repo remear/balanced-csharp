@@ -16,40 +16,38 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public int amount { get; set; }
+        [ResourceField]
         public string appears_on_statement_as { get; set; }
+        [ResourceField]
         public string description { get; set; }
         
         // attributes
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string currency { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string failure_reason { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string failure_reason_code { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string status { get; set; }
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
         public string transaction_number { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "debits.customer")]
+        [ResourceField(field = "debits.customer", link = true, serialize = false)]
         public Customer customer { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "debits.dispute")]
+        [ResourceField(field = "debits.dispute", link = true, serialize = false)]
         public Dispute dispute { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "debits.events")]
+        [ResourceField(field = "debits.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "debits.refunds")]
+        [ResourceField(field = "debits.refunds", link = true, serialize = false)]
         public Refund.Collection refunds { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "debits.source")]
+        [ResourceField(field = "debits.source", link = true, serialize = false)]
         public FundingInstrument source { get; set; }
 
 
@@ -62,9 +60,9 @@ namespace Balanced
             return Resource.Fetch<Debit>(href);
         }
 
-        public Debit save()
+        public void save()
         {
-            return this.save<Debit>();
+            this.save<Debit>();
         }
 
         public class Collection : ResourceCollection<Debit>

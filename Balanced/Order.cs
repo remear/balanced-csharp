@@ -16,39 +16,35 @@ namespace Balanced
         }
 
         // fields
+        [ResourceField]
         public string description { get; set; }
+        [ResourceField]
         public Dictionary<string, string> delivery_address { get; set; }
         
         // attributes
-        [JsonIgnore]
-        public int amount;
-        [JsonIgnore]
-        public int amount_escrowed;
-        [JsonIgnore]
+        [ResourceField(serialize = false)]
+        public int amount { get; set; }
+        [ResourceField(serialize = false)]
+        public int amount_escrowed { get; set; }
+        [ResourceField(serialize = false)]
         public string currency { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "orders.buyers")]
+        [ResourceField(field = "orders.buyers", link = true, serialize = false)]
         public Customer.Collection customers { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "orders.credits")]
+        [ResourceField(field = "orders.credits", link = true, serialize = false)]
         public Credit.Collection credits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "orders.debits")]
+        [ResourceField(field = "orders.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "orders.merchant")]
+        [ResourceField(field = "orders.merchant", link = true, serialize = false)]
         public Customer merchant { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "orders.refunds")]
+        [ResourceField(field = "orders.refunds", link = true, serialize = false)]
         public Refund.Collection refunds { get; set; }
 
-        [JsonIgnore]
-        [ResourceField(field = "orders.reversals")]
+        [ResourceField(field = "orders.reversals", link = true, serialize = false)]
         public Refund.Collection reversals { get; set; }
 
 
@@ -61,9 +57,9 @@ namespace Balanced
             return Resource.Fetch<Order>(href);
         }
 
-        public Order save()
+        public void save()
         {
-            return this.save<Order>();
+            this.save<Order>();
         }
 
         public class Collection : ResourceCollection<Order>

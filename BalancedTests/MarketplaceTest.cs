@@ -8,7 +8,7 @@ namespace BalancedTests
     public class MarketplaceTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestMarketplaceMine()
         {
             Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             Marketplace mp = Balanced.Marketplace.Mine();
