@@ -29,37 +29,37 @@ namespace Balanced
         [ResourceField(serialize = false)]
         public int in_escrow { get; set; }
 
-        [ResourceField(field = "marketplaces.bank_accounts", serialize = false)]
+        [ResourceField(field = "marketplaces.bank_accounts", link = true, serialize = false)]
         public BankAccount.Collection bank_accounts { get; set; }
 
-        [ResourceField(field = "marketplaces.callbacks", serialize = false)]
+        [ResourceField(field = "marketplaces.callbacks", link = true, serialize = false)]
         public Callback.Collection callbacks { get; set; }
 
-        [ResourceField(field = "marketplaces.cards", serialize = false)]
+        [ResourceField(field = "marketplaces.cards", link = true, serialize = false)]
         public Card.Collection cards { get; set; }
 
-        [ResourceField(field = "marketplaces.customers", serialize = false)]
+        [ResourceField(field = "marketplaces.customers", link = true, serialize = false)]
         public Customer.Collection customers { get; set; }
 
-        [ResourceField(field = "marketplaces.credits", serialize = false)]
+        [ResourceField(field = "marketplaces.credits", link = true, serialize = false)]
         public Credit.Collection credits { get; set; }
 
-        [ResourceField(field = "marketplaces.card_holds", serialize = false)]
+        [ResourceField(field = "marketplaces.card_holds", link = true, serialize = false)]
         public CardHold.Collection card_holds { get; set; }
 
-        [ResourceField(field = "marketplaces.debits", serialize = false)]
+        [ResourceField(field = "marketplaces.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
 
-        [ResourceField(field = "marketplaces.events", serialize = false)]
+        [ResourceField(field = "marketplaces.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }
 
-        [ResourceField(field = "marketplaces.refunds", serialize = false)]
+        [ResourceField(field = "marketplaces.refunds", link = true, serialize = false)]
         public Refund.Collection refunds { get; set; }
 
-        [ResourceField(field = "marketplaces.reversals", serialize = false)]
+        [ResourceField(field = "marketplaces.reversals", link = true, serialize = false)]
         public Reversal.Collection reversals { get; set; }
 
-        [ResourceField(field = "marketplaces.owner_customer", serialize = false)]
+        [ResourceField(field = "marketplaces.owner_customer", link = true, serialize = false)]
         public Customer owner_customer { get; set; }
 
         [ResourceField(serialize = false)]

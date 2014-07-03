@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiKey.cs" />
     <Compile Include="Balanced.cs" />
     <Compile Include="BankAccount.cs" />
     <Compile Include="BankAccountVerification.cs" />

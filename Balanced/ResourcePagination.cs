@@ -34,6 +34,8 @@ namespace Balanced
 
         public int Total()
         {
+            if (iterator == null)
+                this.GetEnumerator();
             return iterator.Total();
         }
 
@@ -61,14 +63,12 @@ namespace Balanced
             private String href;
             private ResourcePage<T> page;
             private int index;
-            private int total;
 
             public ResourceIterator(String pHref, ResourcePage<T> pPage)
             {
                 href = pHref;
                 page = pPage;
                 index = 0;
-                total = page.getTotal();
             }
 
             public object Current
@@ -93,7 +93,7 @@ namespace Balanced
 
             public int Total()
             {
-                return total;
+                return page.getTotal();
             }
 
             public void Reset()

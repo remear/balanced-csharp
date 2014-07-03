@@ -43,11 +43,14 @@ namespace Balanced
             request.Accept = "application/vnd.api+json;revision=" + Balanced.API_REVISION;
             request.Timeout = 60000;
             request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
-            string autorization = Balanced.API_KEY + ":";
-            byte[] binaryAuthorization = System.Text.Encoding.UTF8.GetBytes(autorization);
-            autorization = Convert.ToBase64String(binaryAuthorization);
-            autorization = "Basic " + autorization;
-            request.Headers.Add("AUTHORIZATION", autorization);
+            if (Balanced.API_KEY != null)
+            {
+                string authorization = Balanced.API_KEY + ":";
+                byte[] binaryAuthorization = System.Text.Encoding.UTF8.GetBytes(authorization);
+                authorization = Convert.ToBase64String(binaryAuthorization);
+                authorization = "Basic " + authorization;
+                request.Headers.Add("AUTHORIZATION", authorization);
+            }
 
             if (!String.IsNullOrWhiteSpace(payload))
             {
@@ -178,24 +181,31 @@ namespace Balanced
                 Regex r = new Regex(@"{(.+?)}");
                 Match m = r.Match(rawLink);
                 string token = m.Value.ToString();
-                string theKey = token.Substring(1, token.Length - 2).Substring(token.IndexOf("."));
-
-                string tokenValue = default(string);
                 string assembledLink = default(string);
 
-                try
+                if (token.Contains("."))
                 {
-                    tokenValue = resource.links[theKey];
-                }
-                catch (KeyNotFoundException)
-                {
-                    PropertyInfo property = resource.GetType().GetProperty(theKey);
-                    tokenValue = property.GetValue(resource);
-                }
+                    string theKey = token.Substring(1, token.Length - 2).Substring(token.IndexOf("."));
+                    string tokenValue = default(string);
 
-                if (tokenValue != null)
+                    try
+                    {
+                        tokenValue = resource.links[theKey];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        PropertyInfo property = resource.GetType().GetProperty(theKey);
+                        tokenValue = property.GetValue(resource);
+                    }
+
+                    if (tokenValue != null)
+                    {
+                        assembledLink = rawLink.Replace(token, tokenValue);
+                    }
+                }
+                else
                 {
-                    assembledLink = rawLink.Replace(token, tokenValue);
+                    assembledLink = rawLink;
                 }
 
                 newLinks[entry.Key] = assembledLink;

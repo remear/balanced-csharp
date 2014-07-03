@@ -106,7 +106,7 @@ namespace Balanced
             return total;
         }
     
-        private void load()
+        internal void load()
         {
             string responsePayload = Client.Get<Dictionary<string, object>>(href, false);
             var responseObject = JObject.Parse(responsePayload);
