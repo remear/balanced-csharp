@@ -58,6 +58,26 @@ namespace Balanced
             return items;
         }
 
+        public T create()
+        {
+            Dictionary<string, object> payload = new Dictionary<string, object>();
+            return create(payload);
+        }
+
+        public T create(Dictionary<string, object> payload)
+        {
+            dynamic resource;
+            //if (payload != null && payload.Count > 0)
+            //{
+                resource = Client.Post<T>(getURI(), Resource.serialize(payload));
+            //}
+            /*else
+            {
+                resource = Client.Post<T>(getURI(), null);
+            }*/
+            return resource;
+        }
+
         public class ResourceIterator : IEnumerator
         {
             private String href;

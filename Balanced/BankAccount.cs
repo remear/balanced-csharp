@@ -55,6 +55,11 @@ namespace Balanced
             this.save<BankAccount>();
         }
 
+        public void reload()
+        {
+            this.reload<BankAccount>();
+        }
+
         public class Collection : ResourceCollection<BankAccount>
         {
             public Collection() : base(resource_href) { }
@@ -65,5 +70,7 @@ namespace Balanced
         {
             return new ResourceQuery<BankAccount>(resource_href);
         }
+
+        public BankAccountVerification verify() { return verifications.create(); }
     }
 }

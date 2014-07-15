@@ -101,19 +101,19 @@ namespace Balanced
         public static dynamic Get<T>(string path, bool deserialize)
         {
             if (deserialize)
-                return Deserialize<T>(Op(path, "GET", null));
+                return Deserialize(Op(path, "GET", null), typeof(T));
 
             return Op(path, "GET", null);
         }
 
         public static dynamic Post<T>(string path, string payload)
         {
-            return Deserialize<T>(Op(path, "POST", payload));
+            return Deserialize(Op(path, "POST", payload), typeof(T));
         }
 
         public static dynamic Put<T>(string path, string payload)
         {
-            return Deserialize<T>(Op(path, "PUT", payload));
+            return Deserialize(Op(path, "PUT", payload), typeof(T));
         }
 
         public static void Delete(string path)
@@ -145,9 +145,14 @@ namespace Balanced
             }
         }
  
-        public static dynamic Deserialize<T>(string payload)
+        public static dynamic Deserialize(string payload, Type type)
         {
-            var responseObject = JObject.Parse(payload.ToString());
+            return Deserialize(payload, type, null);
+        }
+
+        public static dynamic Deserialize(string payload, Type type, dynamic parent)
+        {
+            var responseObject = JObject.Parse(payload);
             IList<string> keys = responseObject.Properties().Select(p => p.Name).ToList();
             Dictionary<string, string> hyperlinks = responseObject["links"].ToObject<Dictionary<string, string>>();
             Dictionary<string, object> meta = null;
@@ -163,14 +168,14 @@ namespace Balanced
                     continue;
                 }
 
-                resource = responseObject[key][0].ToObject<T>();
-                resource = Hydrate(key, hyperlinks, resource);
+                resource = responseObject[key][0].ToObject(type);
+                resource = HydrateLinks(key, hyperlinks, resource, parent);
             }
             
             return resource;
         }
 
-        public static dynamic Hydrate(string key, Dictionary<string, string> hyperlinks, dynamic resource)
+        public static dynamic HydrateLinks(string key, Dictionary<string, string> hyperlinks, dynamic resource, dynamic parent)
         {
             // Build full links
             Dictionary<string, string> newLinks = new Dictionary<string, string>();
@@ -238,7 +243,11 @@ namespace Balanced
 
                 dynamic res = null;
 
-                if (linkHref != null)
+                if (parent != null && ((Resource)parent).href.Equals(linkHref))
+                {
+                    res = parent;
+                }
+                else if (linkHref != null)
                 {
                     if (fName.Contains("Collection"))
                     {
@@ -246,9 +255,12 @@ namespace Balanced
                     }
                     else
                     {
+                        res = Deserialize(Client.Get<dynamic>(linkHref, false), f.PropertyType, resource);
+                        /*
                         MethodInfo methodInfo = f.PropertyType.GetMethod("Fetch");
                         object classInstance = Activator.CreateInstance(f.PropertyType);
                         res = methodInfo.Invoke(classInstance, new object[] { linkHref });
+                        */
                     }
                 }
 

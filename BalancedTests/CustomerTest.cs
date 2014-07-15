@@ -71,7 +71,7 @@ namespace BalancedTests
             Assert.AreEqual("Mike Richard Jones", customer.name);
         }
 
-        [TestMethod]
+        /*[TestMethod]
         public void TestCustomerCollection()
         {
             int count = 0;
@@ -84,6 +84,6 @@ namespace BalancedTests
             }
 
             Assert.AreEqual(customers.Total(), count);
-        }
+        }*/
     }
 }

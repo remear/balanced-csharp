@@ -44,6 +44,20 @@ namespace Balanced
             this.save<BankAccountVerification>();
         }
 
+        public void reload()
+        {
+            this.reload<BankAccountVerification>();
+        }
+
+        public void confirm(int amount_1, int amount_2)
+        {
+            Dictionary<string, int> payload = new Dictionary<string, int>();
+            payload.Add("amount_1", amount_1);
+            payload.Add("amount_2", amount_2);
+            Client.Put<BankAccountVerification>(href, Resource.serialize(payload));
+            reload();
+        }
+
         public class Collection : ResourceCollection<BankAccountVerification>
         {
             public Collection() : base(resource_href) { }

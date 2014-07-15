@@ -42,6 +42,27 @@ namespace Balanced
                 res = Client.Post<T>(href, serialize(this));
             }
 
+            updateResource<T>(res);
+        }
+
+        public void unstore()
+        {
+            Client.Delete(this.href);
+        }
+
+        public static T Fetch<T>(string href)
+        {
+            return Client.Get<T>(href);
+        }
+
+        public void reload<T>()
+        {
+            dynamic res = Client.Get<T>(href);
+            updateResource<T>(res);
+        }
+
+        public void updateResource<T>(dynamic res)
+        {
             Type resType = this.GetType();
             List<PropertyInfo> fields = resType.GetProperties().ToList();
 
@@ -55,16 +76,6 @@ namespace Balanced
 
                 f.SetValue(this, propValue);
             }
-        }
-
-        public void unstore()
-        {
-            Client.Delete(this.href);
-        }
-
-        public static T Fetch<T>(string href)
-        {
-            return Client.Get<T>(href);
         }
 
         public static string serialize(object resource)
