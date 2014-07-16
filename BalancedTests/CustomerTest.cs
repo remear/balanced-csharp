@@ -33,7 +33,6 @@ namespace BalancedTests
         [TestMethod]
         public void TestCreateBusinessCustomer()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             Customer customer = createBusinessCustomer();
 
             Assert.AreEqual("any flat key/value data you like", customer.meta["meta can store"]);

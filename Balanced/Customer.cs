@@ -83,6 +83,11 @@ namespace Balanced
             this.Reload<Customer>();
         }
 
+        public Order createOrder(Dictionary<string, Object> payload)
+        {
+            return orders.Create(payload);
+        }
+
         public class Collection : ResourceCollection<Customer>
         {
             public Collection() : base(resource_href) { }

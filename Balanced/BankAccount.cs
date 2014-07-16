@@ -77,11 +77,12 @@ namespace Balanced
             }
         }
 
-        public Credit Credit(Dictionary<string, object> payload)
+        public override Credit Credit(Dictionary<string, object> payload)
         {
             return credits.Create(payload);
         }
-        public Debit Debit(Dictionary<string, object> payload)
+
+        public override Debit Debit(Dictionary<string, object> payload)
         {
             return debits.Create(payload);
         }

@@ -22,7 +22,13 @@ namespace Balanced
         public string appears_on_statement_as { get; set; }
         [ResourceField]
         public string description { get; set; }
-        
+
+        [ResourceField(field = "debits.order", link = true)]
+        public Order order { get; set; }
+
+        [ResourceField(field = "debits.source", link = true)]
+        public FundingInstrument source { get; set; }
+
         // attributes
         [ResourceField(serialize = false)]
         public string currency { get; set; }
@@ -47,10 +53,7 @@ namespace Balanced
         [ResourceField(field = "debits.refunds", link = true, serialize = false)]
         public Refund.Collection refunds { get; set; }
 
-        [ResourceField(field = "debits.source", link = true, serialize = false)]
-        public FundingInstrument source { get; set; }
-
-
+        
         public Debit() { }
 
         public Debit(Dictionary<string, object> payload) { }

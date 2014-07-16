@@ -22,7 +22,7 @@ namespace BalancedTests
         {
             Assert.AreEqual("Johann Bernoulli", ba.name);
             Assert.AreEqual("121000358", ba.routing_number);
-            Assert.IsTrue(ba.account_number.EndsWith("0001"));
+            Assert.IsTrue(ba.account_number.EndsWith("0002"));
             Assert.AreEqual("checking", ba.account_type);
         }
 

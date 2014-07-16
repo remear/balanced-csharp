@@ -18,5 +18,8 @@ namespace Balanced
         public string bank_name { get; set; }
         [ResourceField(serialize = false)]
         public string fingerprint { get; set; }
+
+        public abstract Debit Debit(Dictionary<string, object> payload);
+        public abstract Credit Credit(Dictionary<string, object> payload);
     }
 }

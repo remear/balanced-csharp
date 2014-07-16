@@ -67,6 +67,18 @@ namespace Balanced
             this.Reload<Order>();
         }
 
+        public Debit DebitFrom(FundingInstrument fi, Dictionary<string, object> options)
+        {
+            options.Add("order", this.href);
+            return fi.Debit(options);
+        }
+
+        public Credit CreditTo(BankAccount ba, Dictionary<string, object> options)
+        {
+            options.Add("order", this.href);
+            return ba.Credit(options);
+        }
+
         public class Collection : ResourceCollection<Order>
         {
             public Collection() : base(resource_href) { }

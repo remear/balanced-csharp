@@ -20,19 +20,6 @@ namespace BalancedTests
             mp = marketplace;
         }
 
-        /*
-        protected Marketplace createMarketplace()
-        {
-            ApiKey key = new ApiKey();
-            key.Save();
-            Balanced.configure(key.secret);
-
-            Marketplace mp = new Marketplace();
-            mp.Save();
-            return mp;
-        }
-         * */
-
         protected Card createCard()
         {
             Dictionary<string, string> address = new Dictionary<string, string>();
@@ -78,7 +65,7 @@ namespace BalancedTests
             BankAccount bankAccount = new BankAccount();
             bankAccount.name = "Johann Bernoulli";
             bankAccount.routing_number = "121000358";
-            bankAccount.account_number = "9900000001";
+            bankAccount.account_number = "9900000002";
             bankAccount.account_type = "checking";
             bankAccount.Save();
             return bankAccount;

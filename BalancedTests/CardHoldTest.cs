@@ -58,7 +58,7 @@ namespace BalancedTests
         }
 
         [TestMethod]
-        public void testCardHoldVoid()
+        public void TestCardHoldVoid()
         {
             Card card = createCard();
 

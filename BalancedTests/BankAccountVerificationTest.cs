@@ -62,7 +62,7 @@ namespace BalancedTests
                 catch (APIException)
                 {
                     bav = BankAccountVerification.Fetch(bav.href);
-                    Assert.AreEqual("pending", bav.deposit_status);
+                    Assert.AreEqual("succeeded", bav.deposit_status);
                 }
             }
             try

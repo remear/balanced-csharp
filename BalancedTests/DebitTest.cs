@@ -88,7 +88,7 @@ namespace BalancedTests
 
             Debit debit = ba.Debit(payload);
 
-            Assert.AreEqual("pending", debit.status);
+            Assert.AreEqual("succeeded", debit.status);
             Assert.AreEqual(100000, debit.amount);
         }
 
@@ -107,14 +107,13 @@ namespace BalancedTests
 
             Debit debit = ba.Debit(payload);
 
-            Assert.AreEqual("pending", debit.status);
+            Assert.AreEqual("succeeded", debit.status);
             Assert.AreEqual(100000, debit.amount);
         }
 
         [TestMethod]
         public void TestDebitFilter()
         {
-            //Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             Debit[] debits = new Debit[3];
             Dictionary<string, object> payload = new Dictionary<string, object>();
             payload.Add("amount", 100000);

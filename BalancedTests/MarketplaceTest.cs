@@ -5,12 +5,11 @@ using Balanced;
 namespace BalancedTests
 {
     [TestClass]
-    public class MarketplaceTest
+    public class MarketplaceTest : BaseTest
     {
         [TestMethod]
         public void TestMarketplaceMine()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             Marketplace mp = Balanced.Marketplace.Mine();
         }
     }

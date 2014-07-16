@@ -23,6 +23,9 @@ namespace Balanced
         [ResourceField]
         public string description { get; set; }
 
+        [ResourceField(field = "credits.destination", link = true)]
+        public FundingInstrument destination { get; set; }
+
         [ResourceField(field = "credits.order", link = true)]
         public Order order { get; set; }
 
@@ -40,9 +43,6 @@ namespace Balanced
 
         [ResourceField(field = "credits.customer", link = true, serialize = false)]
         public Customer customer { get; set; }
-
-        [ResourceField(field = "credits.destination", link = true)]
-        public FundingInstrument destination { get; set; }
 
         [ResourceField(field = "credits.events", link = true, serialize = false)]
         public Event.Collection events { get; set; }

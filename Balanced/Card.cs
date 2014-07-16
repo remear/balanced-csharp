@@ -100,12 +100,12 @@ namespace Balanced
             return card_holds.Create(payload);
         }
 
-        public Debit Debit(Dictionary<string, object> payload)
+        public override Debit Debit(Dictionary<string, object> payload)
         {
             return debits.Create(payload);
         }
 
-        public Credit Credit(Dictionary<string, object> payload)
+        public override Credit Credit(Dictionary<string, object> payload)
         {
             if (credits == null) {
                 throw new Exceptions.FundingInstrumentNotCreditable();
