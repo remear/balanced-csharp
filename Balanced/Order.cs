@@ -57,9 +57,14 @@ namespace Balanced
             return Resource.Fetch<Order>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Order>();
+            this.Save<Order>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Order>();
         }
 
         public class Collection : ResourceCollection<Order>
@@ -68,7 +73,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Order> query()
+        public static ResourceQuery<Order> Query()
         {
             return new ResourceQuery<Order>(resource_href);
         }

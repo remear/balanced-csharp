@@ -73,9 +73,14 @@ namespace Balanced
             return Resource.Fetch<Customer>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Customer>();
+            this.Save<Customer>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Customer>();
         }
 
         public class Collection : ResourceCollection<Customer>
@@ -84,7 +89,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Customer> query()
+        public static ResourceQuery<Customer> Query()
         {
             return new ResourceQuery<Customer>(resource_href);
         }

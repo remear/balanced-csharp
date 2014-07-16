@@ -13,7 +13,7 @@ namespace Balanced
         private ResourceIterator iterator;
         private UriBuilder uri_builder;
 
-        protected UriBuilder getURIBuilder()
+        protected UriBuilder GetURIBuilder()
         {
             return uri_builder;
         }
@@ -27,6 +27,7 @@ namespace Balanced
 
         public IEnumerator GetEnumerator()
         {
+            string href = GetURI();
             ResourcePage<T> page = new ResourcePage<T>(href);
             iterator = new ResourceIterator(href, page);
             return iterator;
@@ -39,16 +40,17 @@ namespace Balanced
             return iterator.Total();
         }
 
-        protected string getURI()
+        protected string GetURI()
         {
-            return uri_builder.Path.ToString() + uri_builder.Query.ToString();
+            var uri = uri_builder.Path.ToString() + uri_builder.Query.ToString();
+            return uri;
         }
 
-        public List<T> all()
+        public List<T> All()
         {
-            string href = getURI();
+            string href = GetURI();
             ResourcePage<T> page = new ResourcePage<T>(href);
-            List<T> items = new List<T>(page.getTotal());
+            List<T> items = new List<T>(page.GetTotal());
             ResourceIterator iterator = new ResourceIterator(href, page);
             while (iterator.MoveNext())
             {
@@ -58,23 +60,16 @@ namespace Balanced
             return items;
         }
 
-        public T create()
+        public T Create()
         {
             Dictionary<string, object> payload = new Dictionary<string, object>();
-            return create(payload);
+            return Create(payload);
         }
 
-        public T create(Dictionary<string, object> payload)
+        public T Create(Dictionary<string, object> payload)
         {
             dynamic resource;
-            //if (payload != null && payload.Count > 0)
-            //{
-                resource = Client.Post<T>(getURI(), Resource.serialize(payload));
-            //}
-            /*else
-            {
-                resource = Client.Post<T>(getURI(), null);
-            }*/
+            resource = Client.Post<T>(GetURI(), Resource.Serialize(payload));
             return resource;
         }
 
@@ -95,12 +90,12 @@ namespace Balanced
             {
                 get
                 {
-                    if (index >= page.getSize())
+                    if (index >= page.GetSize())
                     {
-                        page = page.getNext();
+                        page = page.GetNext();
                         index = 0;
                     }
-                    T t = page.getItems()[index];
+                    T t = page.GetItems()[index];
                     index += 1;
                     return t;
                 }
@@ -108,12 +103,12 @@ namespace Balanced
 
             public bool MoveNext()
             {
-                return (index < page.getSize() || this.page.getNextUri() != null);
+                return (index < page.GetSize() || this.page.GetNextUri() != null);
             }
 
             public int Total()
             {
-                return page.getTotal();
+                return page.GetTotal();
             }
 
             public void Reset()

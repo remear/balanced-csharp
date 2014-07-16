@@ -40,82 +40,87 @@ namespace Balanced
             href = pHref;
         }
     
-        public int getSize()
+        public int GetSize()
         {
-            return getItems().Count();
+            return GetItems().Count();
         }
     
-        public List<T> getItems()
+        public List<T> GetItems()
         {
             if (items == null) 
-                load();
+                Load();
             return items;
         }
     
-        public string getFirstUri()
+        public string GetFirstUri()
         {
             if (items == null) 
-                load();
+                Load();
             return first_uri;
         }
     
-        public ResourcePage<T> getFirst()
+        public ResourcePage<T> GetFirst()
         {
-            return new ResourcePage<T>(getFirstUri());
+            return new ResourcePage<T>(GetFirstUri());
         }
     
-        public string getPreviousUri()
+        public string GetPreviousUri()
         {
             if (items == null) 
-                load();
+                Load();
             return previous_uri;
         }
     
-        public ResourcePage<T> getPrevious()
+        public ResourcePage<T> GetPrevious()
         {
-            return new ResourcePage<T>(getPreviousUri());
+            return new ResourcePage<T>(GetPreviousUri());
         }
     
-        public string getNextUri()
+        public string GetNextUri()
         {
             if (items == null) 
-                load();
+                Load();
             return next_uri;
         }
     
-        public ResourcePage<T> getNext()
+        public ResourcePage<T> GetNext()
         {
-            return new ResourcePage<T>(getNextUri());
+            return new ResourcePage<T>(GetNextUri());
         }
     
-        public String getLastUri()
+        public String GetLastUri()
         {
             return last_uri;
         }
     
-        public ResourcePage<T> getLast()
+        public ResourcePage<T> GetLast()
         {
-            return new ResourcePage<T>(getLastUri());
+            return new ResourcePage<T>(GetLastUri());
         }
 
     
-        public int getTotal()
+        public int GetTotal()
         {
             if (items == null) 
-                load();
+                Load();
             return total;
         }
     
-        internal void load()
+        internal void Load()
         {
             string responsePayload = Client.Get<Dictionary<string, object>>(href, false);
             var responseObject = JObject.Parse(responsePayload);
             IList<string> keys = responseObject.Properties().Select(p => p.Name).ToList();
+            Dictionary<string, object> meta = null;
+            Dictionary<string, string> hyperlinks = null;
 
-            Dictionary<string, object> meta = responseObject["meta"].ToObject<Dictionary<string, object>>();
-            Dictionary<string, string> hyperlinks = responseObject["links"].ToObject<Dictionary<string, string>>();
+            if (responseObject["meta"] != null)
+                meta = responseObject["meta"].ToObject<Dictionary<string, object>>();
+
+            if (responseObject["links"] != null)
+                hyperlinks = responseObject["links"].ToObject<Dictionary<string, string>>();
+
             items = new List<T>();
-
 
             foreach (string key in keys)
             {
@@ -129,37 +134,14 @@ namespace Balanced
                     var cust = o.ToObject<T>();
                     items.Add(cust);
                 }
-                //resources = ;
             }
 
-
-            //JObject metaObj = (JObject)page["meta"];
-            //Dictionary<string, object> meta = metaObj.ToObject<Dictionary<string, object>>();
             href = (string)meta["href"];
             total = Convert.ToInt32(meta["total"]);
             first_uri = (string)meta["first"];
             last_uri = (string)meta["last"];
             previous_uri = (string)meta["previous"];
             next_uri = (string)meta["next"];
-
-            /*List<Dictionary<string, object>> objs = (List<Dictionary<string, object>>) page.get(Utils.classNameToResourceKey(cls.getSimpleName()));
-            if (objs != null) {
-                items = new ArrayList<T>(objs.size());
-                try {
-                    for (Map<String, Object> obj: objs) {
-                        T t = cls.newInstance();
-                        ((Resource) t).hydrate(hyperlinks, resourceMeta, obj);
-                        ((Resource) t).constructFromResponse(obj);
-                        items.add(t);
-                    }
-                }
-                catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                }
-                catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }*/
         }
     }
 }

@@ -51,9 +51,14 @@ namespace Balanced
             return Resource.Fetch<Reversal>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Reversal>();
+            this.Save<Reversal>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Reversal>();
         }
 
         public class Collection : ResourceCollection<Reversal>
@@ -62,7 +67,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Reversal> query()
+        public static ResourceQuery<Reversal> Query()
         {
             return new ResourceQuery<Reversal>(resource_href);
         }

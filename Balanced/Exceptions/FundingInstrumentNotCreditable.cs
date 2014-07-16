@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace Balanced.Exceptions
 {
-    class FundingInstrumentNotCreditable
-    {
-    }
+    public class FundingInstrumentNotCreditable : Exception { }
 }

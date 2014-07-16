@@ -28,14 +28,17 @@ namespace Balanced
         public string routing_number { get; set; }
 
         // attributes
-        [ResourceField(field = "bank_accounts.bank_account_verifications", link = true, serialize = false)]
-        public BankAccountVerification.Collection verifications { get; set; }
-
         [ResourceField(field = "bank_accounts.bank_account_verification", link = true, serialize = false)]
         public BankAccountVerification verification { get; set; }
 
+        [ResourceField(field = "bank_accounts.bank_account_verifications", link = true, serialize = false)]
+        public BankAccountVerification.Collection verifications { get; set; }
+
         [ResourceField(field = "bank_accounts.credits", link = true, serialize = false)]
         public Credit.Collection credits { get; set; }
+
+        [ResourceField(field = "bank_accounts.customer", link = true)]
+        public Customer customer { get; set; }
 
         [ResourceField(field = "bank_accounts.debits", link = true, serialize = false)]
         public Debit.Collection debits { get; set; }
@@ -50,27 +53,52 @@ namespace Balanced
             return Resource.Fetch<BankAccount>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<BankAccount>();
+            this.Save<BankAccount>();
         }
 
-        public void reload()
+        public void Reload()
         {
-            this.reload<BankAccount>();
+            this.Reload<BankAccount>();
         }
 
+        public void AssociateToCustomer(Customer customer)
+        {
+            this.AssociateToCustomer(customer.href);
+        }
+
+        public void AssociateToCustomer(string href)
+        {
+            if (href != null)
+            {
+                links.Add("customer", href);
+                this.Save();
+            }
+        }
+
+        public Credit Credit(Dictionary<string, object> payload)
+        {
+            return credits.Create(payload);
+        }
+        public Debit Debit(Dictionary<string, object> payload)
+        {
+            return debits.Create(payload);
+        }
+
+        public BankAccountVerification Verify() { return verifications.Create(); }
+        
         public class Collection : ResourceCollection<BankAccount>
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<BankAccount> query()
+        public static ResourceQuery<BankAccount> Query()
         {
             return new ResourceQuery<BankAccount>(resource_href);
         }
 
-        public BankAccountVerification verify() { return verifications.create(); }
+        
     }
 }

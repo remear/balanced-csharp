@@ -60,9 +60,24 @@ namespace Balanced
             return Resource.Fetch<Credit>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Credit>();
+            this.Save<Credit>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Credit>();
+        }
+
+        public Reversal Reverse(Dictionary<string, object> payload)
+        {
+            return reversals.Create(payload);
+        }
+
+        public Reversal Reverse()
+        {
+            return Reverse(null);
         }
 
         public class Collection : ResourceCollection<Credit>
@@ -71,7 +86,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Credit> query()
+        public static ResourceQuery<Credit> Query()
         {
             return new ResourceQuery<Credit>(resource_href);
         }

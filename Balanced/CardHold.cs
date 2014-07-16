@@ -59,9 +59,24 @@ namespace Balanced
             return Resource.Fetch<CardHold>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<CardHold>();
+            this.Save<CardHold>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<CardHold>();
+        }
+
+        public Debit Capture(Dictionary<string, object> payload)
+        {
+            return debits.Create(payload);
+        }
+
+        public Debit Capture()
+        {
+            return this.Capture(null);
         }
 
         public class Collection : ResourceCollection<CardHold>
@@ -70,7 +85,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<CardHold> query()
+        public static ResourceQuery<CardHold> Query()
         {
             return new ResourceQuery<CardHold>(resource_href);
         }

@@ -38,7 +38,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Event> query()
+        public static ResourceQuery<Event> Query()
         {
             return new ResourceQuery<Event>(resource_href);
         }

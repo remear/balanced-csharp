@@ -58,6 +58,10 @@
     <Compile Include="ApiKeyTest.cs" />
     <Compile Include="BankAccountTest.cs" />
     <Compile Include="BankAccountVerificationTest.cs" />
+    <Compile Include="CallbackTest.cs" />
+    <Compile Include="CardHoldTest.cs" />
+    <Compile Include="CreditTest.cs" />
+    <Compile Include="DebitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Balanced\Balanced.csproj">

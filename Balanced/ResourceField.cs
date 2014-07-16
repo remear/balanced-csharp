@@ -31,9 +31,6 @@ namespace Balanced
             set { _link = value; }
         }
 
-        public ResourceField()
-        {
-
-        }
+        public ResourceField() { }
     }
 }

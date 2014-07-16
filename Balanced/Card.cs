@@ -71,9 +71,46 @@ namespace Balanced
             return Resource.Fetch<Card>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Card>();
+            this.Save<Card>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Card>();
+        }
+
+        public void AssociateToCustomer(Customer customer)
+        {
+            this.AssociateToCustomer(customer.href);
+        }
+
+        public void AssociateToCustomer(string href)
+        {
+            if (href != null)
+            {
+                links.Add("customer", href);
+                this.Save();
+            }
+        }
+
+        public CardHold Hold(Dictionary<string, object> payload)
+        {
+            return card_holds.Create(payload);
+        }
+
+        public Debit Debit(Dictionary<string, object> payload)
+        {
+            return debits.Create(payload);
+        }
+
+        public Credit Credit(Dictionary<string, object> payload)
+        {
+            if (credits == null) {
+                throw new Exceptions.FundingInstrumentNotCreditable();
+            }
+            return credits.Create(payload);
         }
 
         public class Collection : ResourceCollection<Card>
@@ -82,7 +119,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Card> query()
+        public static ResourceQuery<Card> Query()
         {
             return new ResourceQuery<Card>(resource_href);
         }

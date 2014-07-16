@@ -28,24 +28,24 @@ namespace Balanced
 
         public Resource() { }
 
-        public void save<T>()
+        public void Save<T>()
         {
             dynamic res = null;
 
             if (this.href != null)
             {
-                res = Client.Put<T>(this.href, serialize(this));
+                res = Client.Put<T>(this.href, Serialize(this));
             }
             else
             {
                 string href = this.GetType().GetProperty("resource_href").GetValue(this).ToString();
-                res = Client.Post<T>(href, serialize(this));
+                res = Client.Post<T>(href, Serialize(this));
             }
 
-            updateResource<T>(res);
+            UpdateResource<T>(res);
         }
 
-        public void unstore()
+        public void Unstore()
         {
             Client.Delete(this.href);
         }
@@ -55,13 +55,13 @@ namespace Balanced
             return Client.Get<T>(href);
         }
 
-        public void reload<T>()
+        public void Reload<T>()
         {
             dynamic res = Client.Get<T>(href);
-            updateResource<T>(res);
+            UpdateResource<T>(res);
         }
 
-        public void updateResource<T>(dynamic res)
+        public void UpdateResource<T>(dynamic res)
         {
             Type resType = this.GetType();
             List<PropertyInfo> fields = resType.GetProperties().ToList();
@@ -78,7 +78,7 @@ namespace Balanced
             }
         }
 
-        public static string serialize(object resource)
+        public static string Serialize(object resource)
         {
             return JsonConvert.SerializeObject(resource,
                 new JsonSerializerSettings {

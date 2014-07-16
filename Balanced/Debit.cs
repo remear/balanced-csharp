@@ -60,9 +60,24 @@ namespace Balanced
             return Resource.Fetch<Debit>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Debit>();
+            this.Save<Debit>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Debit>();
+        }
+
+        public Refund Refund(Dictionary<string, object> payload)
+        {
+            return refunds.Create(payload);
+        }
+
+        public Refund Refund()
+        {
+            return Refund(null);
         }
 
         public class Collection : ResourceCollection<Debit>
@@ -71,7 +86,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Debit> query()
+        public static ResourceQuery<Debit> Query()
         {
             return new ResourceQuery<Debit>(resource_href);
         }

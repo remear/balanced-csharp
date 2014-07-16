@@ -9,9 +9,6 @@ namespace Balanced
     [AttributeUsage(AttributeTargets.Property)]
     public class LocalResourceField : Attribute
     {
-        public LocalResourceField()
-        {
-
-        }
+        public LocalResourceField() { }
     }
 }

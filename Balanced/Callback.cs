@@ -22,7 +22,7 @@ namespace Balanced
         public string url { get; set; }
 
         // attributes
-        [ResourceField(link = true, serialize = false)]
+        [ResourceField(serialize = false)]
         public string revision { get; set; }
 
 
@@ -35,13 +35,18 @@ namespace Balanced
             return Resource.Fetch<Callback>(href);
         }
 
+        public void Save()
+        {
+            this.Save<Callback>();
+        }
+
         public class Collection : ResourceCollection<Callback>
         {
             public Collection() : base(resource_href) { }
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Callback> query()
+        public static ResourceQuery<Callback> Query()
         {
             return new ResourceQuery<Callback>(resource_href);
         }

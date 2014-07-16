@@ -12,7 +12,7 @@ namespace BalancedTests
         public void TestApiKeyCreate()
         {
             ApiKey key = new ApiKey();
-            key.save();
+            key.Save();
             Assert.IsNotNull(key.secret);
         }
     
@@ -20,16 +20,16 @@ namespace BalancedTests
         public void TestApiKeyDelete()
         {
             ApiKey key = new ApiKey();
-            key.save();
+            key.Save();
             Balanced.Balanced.configure(key.secret);
-            key.unstore();
+            key.Unstore();
         }
 
         [TestMethod]
         public void TestApiKeyCollection()
         {
             ApiKey key = new ApiKey();
-            key.save();
+            key.Save();
             Balanced.Balanced.configure(key.secret);
             ApiKey.Collection apiKeys = new ApiKey.Collection();
             Assert.AreEqual(1, apiKeys.Total());
@@ -39,21 +39,21 @@ namespace BalancedTests
         public void TestApiKeyQueryAll()
         {
             ApiKey key = new ApiKey();
-            key.save();
+            key.Save();
             Balanced.Balanced.configure(key.secret);
             Marketplace marketplace = new Marketplace();
-            marketplace.save();
+            marketplace.Save();
 
             ApiKey key1 = new ApiKey();
-            key1.saveToMarketplace();
+            key1.SaveToMarketplace();
         
             ApiKey key2 = new ApiKey();
-            key2.saveToMarketplace();
+            key2.SaveToMarketplace();
         
             ApiKey key3 = new ApiKey();
-            key3.saveToMarketplace();
+            key3.SaveToMarketplace();
         
-            List<ApiKey> keys = ApiKey.query().all();
+            List<ApiKey> keys = ApiKey.Query().All();
             Assert.AreEqual(4, keys.Count);
             List<String> key_guids = new List<String>();
             foreach (ApiKey k in keys) {

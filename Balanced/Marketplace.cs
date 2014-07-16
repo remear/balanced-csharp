@@ -71,7 +71,7 @@ namespace Balanced
 
         public static Marketplace Mine()
         {
-            Marketplace mp = Marketplace.query().first();
+            Marketplace mp = Marketplace.Query().First();
             if (mp == null)
                 throw new SystemException("A Marketplace is required but was not found");
             return mp;
@@ -86,12 +86,17 @@ namespace Balanced
             return Resource.Fetch<Marketplace>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<Marketplace>();
+            this.Save<Marketplace>();
         }
 
-        public static ResourceQuery<Marketplace> query()
+        public void Reload()
+        {
+            this.Reload<Marketplace>();
+        }
+
+        public static ResourceQuery<Marketplace> Query()
         {
             return new ResourceQuery<Marketplace>(resource_href);
         }

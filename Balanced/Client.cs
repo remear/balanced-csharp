@@ -35,7 +35,7 @@ namespace Balanced
     {
         private static dynamic Op(string path, string method, string payload)
         {
-            Uri url = new Uri(Balanced.API_URL + path);
+            string url = Balanced.API_URL + path;
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.UserAgent = "balanced-csharp/" + Balanced.VERSION;
             request.Method = method;
@@ -253,14 +253,20 @@ namespace Balanced
                     {
                         res = Activator.CreateInstance(f.PropertyType, linkHref);
                     }
+                    else if (fName.Contains("FundingInstrument")) // TODO: Make this more dynamic
+                    {
+                        if (linkHref.Contains("/CC"))
+                        {
+                            res = Deserialize(Client.Get<dynamic>(linkHref, false), typeof(Card), resource);
+                        }
+                        else if (linkHref.Contains("/BA"))
+                        {
+                            res = Deserialize(Client.Get<dynamic>(linkHref, false), typeof(BankAccount), resource);
+                        }
+                    }
                     else
                     {
                         res = Deserialize(Client.Get<dynamic>(linkHref, false), f.PropertyType, resource);
-                        /*
-                        MethodInfo methodInfo = f.PropertyType.GetMethod("Fetch");
-                        object classInstance = Activator.CreateInstance(f.PropertyType);
-                        res = methodInfo.Invoke(classInstance, new object[] { linkHref });
-                        */
                     }
                 }
 

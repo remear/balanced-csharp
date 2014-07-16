@@ -6,13 +6,11 @@ using Balanced;
 namespace BalancedTests
 {
     [TestClass]
-    public class CardTest
+    public class CardTest : BaseTest
     {
         [TestMethod]
         public void TestCardCreate()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
-
             Dictionary<string, string> meta = new Dictionary<string, string>();
             meta.Add("user_id", "0192837465");
             meta.Add("my-own-customer-id", "12345");
@@ -34,7 +32,7 @@ namespace BalancedTests
             card.address = address;
             card.meta = meta;
 
-            card.save();
+            card.Save();
 
             Assert.IsTrue(card.is_verified);
             Assert.AreEqual("MasterCard", card.brand);
@@ -52,19 +50,17 @@ namespace BalancedTests
         [TestMethod]
         public void TestCardDelete()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
-
             Card card = new Card();
             card.name = "John Jameson";
             card.number = "5105105105105100";
             card.expiration_month = 12;
             card.expiration_year = 2020;
             card.cvv = "123";
-            card.save();
+            card.Save();
 
             string href = card.href;
 
-            card.unstore();
+            card.Unstore();
 
             Card deletedCard = Balanced.Card.Fetch(href);
             Assert.AreEqual(false, deletedCard.can_debit);

@@ -52,7 +52,12 @@ namespace Balanced
 
         public void save()
         {
-            this.save<Refund>();
+            this.Save<Refund>();
+        }
+
+        public void Reload()
+        {
+            this.Reload<Refund>();
         }
 
         public class Collection : ResourceCollection<Refund>
@@ -61,7 +66,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<Refund> query()
+        public static ResourceQuery<Refund> Query()
         {
             return new ResourceQuery<Refund>(resource_href);
         }

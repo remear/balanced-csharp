@@ -39,23 +39,23 @@ namespace Balanced
             return Resource.Fetch<BankAccountVerification>(href);
         }
 
-        public void save()
+        public void Save()
         {
-            this.save<BankAccountVerification>();
+            this.Save<BankAccountVerification>();
         }
 
-        public void reload()
+        public void Reload()
         {
-            this.reload<BankAccountVerification>();
+            this.Reload<BankAccountVerification>();
         }
 
-        public void confirm(int amount_1, int amount_2)
+        public void Confirm(int amount_1, int amount_2)
         {
             Dictionary<string, int> payload = new Dictionary<string, int>();
             payload.Add("amount_1", amount_1);
             payload.Add("amount_2", amount_2);
-            Client.Put<BankAccountVerification>(href, Resource.serialize(payload));
-            reload();
+            Client.Put<BankAccountVerification>(href, Resource.Serialize(payload));
+            Reload();
         }
 
         public class Collection : ResourceCollection<BankAccountVerification>
@@ -64,7 +64,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<BankAccountVerification> query()
+        public static ResourceQuery<BankAccountVerification> Query()
         {
             return new ResourceQuery<BankAccountVerification>(resource_href);
         }

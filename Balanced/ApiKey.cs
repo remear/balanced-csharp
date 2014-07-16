@@ -26,15 +26,15 @@ namespace Balanced
             return Resource.Fetch<ApiKey>(href);
         }
 
-        public void save()
+        public void Save()
         {
             Balanced.configure(null);
-            this.save<ApiKey>();
+            this.Save<ApiKey>();
         }
 
-        public void saveToMarketplace()
+        public void SaveToMarketplace()
         {
-            this.save<ApiKey>();
+            this.Save<ApiKey>();
         }
 
         public class Collection : ResourceCollection<ApiKey>
@@ -43,7 +43,7 @@ namespace Balanced
             public Collection(string href) : base(href) { }
         }
 
-        public static ResourceQuery<ApiKey> query()
+        public static ResourceQuery<ApiKey> Query()
         {
             return new ResourceQuery<ApiKey>(resource_href);
         }

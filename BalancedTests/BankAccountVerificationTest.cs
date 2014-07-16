@@ -11,13 +11,12 @@ namespace BalancedTests
         [TestMethod]
         public void TestBankAccountVerify()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             BankAccount ba = createBankAccount();
-            BankAccountVerification bav = ba.verify();
-            ba.reload();
+            BankAccountVerification bav = ba.Verify();
+            ba.Reload();
 
             Assert.AreEqual(ba.verification.id, bav.id);
-            bav.confirm(1, 1);
+            bav.Confirm(1, 1);
             Assert.AreEqual(bav.attempts, 1);
             Assert.AreEqual(bav.attempts_remaining, 2);
             Assert.AreEqual(bav.deposit_status, "succeeded");
@@ -26,57 +25,58 @@ namespace BalancedTests
 
         [TestMethod]
         [ExpectedException(typeof(Balanced.Exceptions.APIException))]
-        public void testFailedConfirm()
+        public void TestFailedConfirm()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             BankAccount ba = createBankAccount();
-            ba.verify();
-            ba.reload();
+            ba.Verify();
+            ba.Reload();
             BankAccountVerification bav = ba.verification;
-            bav.confirm(12, 13);
+            bav.Confirm(12, 13);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Balanced.Exceptions.APIException))]
-        public void testDoubleConfirm()
+        public void TestDoubleConfirm()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             BankAccount ba = createBankAccount();
-            ba.verify();
-            ba.reload();
+            ba.Verify();
+            ba.Reload();
             BankAccountVerification bav = ba.verification;
-            bav.confirm(1, 1);
-            bav.confirm(1, 1);
+            bav.Confirm(1, 1);
+            bav.Confirm(1, 1);
         }
 
         [TestMethod]
-        public void testExhaustedConfirm()
+        public void TestExhaustedConfirm()
         {
-            Balanced.Balanced.configure("8f7b42ba043211e3bd9e026ba7cd33d0");
             BankAccount ba = createBankAccount();
-            ba.verify();
-            ba.reload();
+            ba.Verify();
+            ba.Reload();
             BankAccountVerification bav = ba.verification;
-            while (bav.attempts_remaining != 1) {
-                try {
-                    bav.confirm(12, 13);
+            while (bav.attempts_remaining != 1)
+            {
+                try
+                {
+                    bav.Confirm(12, 13);
                 }
-                catch (APIException e){
+                catch (APIException)
+                {
                     bav = BankAccountVerification.Fetch(bav.href);
                     Assert.AreEqual("pending", bav.deposit_status);
                 }
             }
-            try {
-                bav.confirm(12, 13);
+            try
+            {
+                bav.Confirm(12, 13);
             }
-            catch (APIException e)
+            catch (APIException)
             {
                 bav = BankAccountVerification.Fetch(bav.href);
                 Assert.AreEqual(bav.verification_status, "failed");
             }
             Assert.AreEqual(bav.attempts_remaining, 0);
-            bav = ba.verify();
-            bav.confirm(1, 1);
+            bav = ba.Verify();
+            bav.Confirm(1, 1);
             Assert.AreEqual("succeeded", bav.verification_status);
             Assert.AreEqual(ba.href, bav.bank_account.href);
         }
