@@ -18,42 +18,33 @@ namespace Balanced
 
         public ResourceQuery(string href) : base(href) { }
 
-        public T First()
-        {
-            base.GetURIBuilder().SetQueryParam("limit", "1");
-            List<T> items = All();
-            if (items.Count() == 0)
-                return default(T);
-            return items[0];
-        }
-
         // Filtering
 
         public ResourceQuery<T> Filter(String field, String op, String value)
         {
-            String name = String.Format("z{0}[{1}]", System.Uri.EscapeDataString(field), System.Uri.EscapeDataString(op));
-            base.GetURIBuilder().SetQueryParam(name, value);
+            String name = String.Format("{0}[{1}]", field, op);
+            uri_builder.SetQueryParam(name, value);
             return this;
         }
 
         public ResourceQuery<T> Filter(String field, String op, String[] values)
         {
-            String name = String.Format("b{0}[{1}]", System.Uri.EscapeDataString(field), System.Uri.EscapeDataString(op));
+            String name = String.Format("{0}[{1}]", field, op);
             String value = String.Join(",", values);
-            base.GetURIBuilder().SetQueryParam(name, value);
+            uri_builder.SetQueryParam(name, value);
             return this;
         }
 
         public ResourceQuery<T> Filter(String field, String value)
         {
-            base.GetURIBuilder().SetQueryParam(field, value);
+            uri_builder.SetQueryParam(field, value);
             return this;
         }
 
         public ResourceQuery<T> Filter(String field, String[] values)
         {
             String value = String.Join(",", values);
-            base.GetURIBuilder().SetQueryParam(field, value);
+            uri_builder.SetQueryParam(field, value);
             return this;
         }
 
@@ -113,14 +104,14 @@ namespace Balanced
 
         public ResourceQuery<T> OrderBy(String field)
         {
-            base.GetURIBuilder().SetQueryParam("sort", System.Uri.EscapeDataString(field));
+            uri_builder.SetQueryParam("sort", field);
             return this;
         }
 
         public ResourceQuery<T> OrderBy(String field, String order)
         {
-            String value = String.Format("{0},{1}", System.Uri.EscapeDataString(field), System.Uri.EscapeDataString(order));
-            base.GetURIBuilder().SetQueryParam("sort", value);
+            String value = String.Format("{0},{1}", field, order);
+            uri_builder.SetQueryParam("sort", value);
             return this;
         }
     }

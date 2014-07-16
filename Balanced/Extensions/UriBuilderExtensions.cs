@@ -24,8 +24,8 @@ public static class UriBuilderExtensions
             .AsKeyValuePairs()
             .ToConcatenatedString(pair =>
                 pair.Key == null
-                ? pair.Value
-                : pair.Key + "=" + pair.Value, "&");
+                ? System.Uri.EscapeDataString(pair.Value)
+                : System.Uri.EscapeDataString(pair.Key) + "=" + System.Uri.EscapeDataString(pair.Value), "&");
 
         uri.Query = query;
 

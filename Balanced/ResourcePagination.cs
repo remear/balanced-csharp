@@ -9,20 +9,20 @@ namespace Balanced
 {
     public class ResourcePagination<T> : IEnumerable
     {
-        private string href;
+        //private string href;
         private ResourceIterator iterator;
-        private UriBuilder uri_builder;
+        protected UriBuilder uri_builder;
 
-        protected UriBuilder GetURIBuilder()
+        /*protected UriBuilder GetURIBuilder()
         {
             return uri_builder;
-        }
+        }*/
 
         public ResourcePagination(string pHref)
         {
-            href = pHref;
+            //href = pHref;
             uri_builder = new UriBuilder();
-            uri_builder.Path = href;
+            uri_builder.Path = pHref;
         }
 
         public IEnumerator GetEnumerator()
@@ -44,6 +44,15 @@ namespace Balanced
         {
             var uri = uri_builder.Path.ToString() + uri_builder.Query.ToString();
             return uri;
+        }
+
+        public T First()
+        {
+            uri_builder.SetQueryParam("limit", "1");
+            List<T> items = All();
+            if (items.Count() == 0)
+                return default(T);
+            return items[0];
         }
 
         public List<T> All()
